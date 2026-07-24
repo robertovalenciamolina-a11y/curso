@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoveFree - Sillas de Ruedas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            color: #333;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            background: white;
+            color: #0077b6;
+            padding: 4px 12px;
+            border-radius: 8px;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        .cart-btn {
+            background: white;
+            color: #0077b6;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cart-count {
+            background: #e63946;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #023e8a, #0077b6);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-btn {
+            background: #ff6b6b;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .hero-btn:hover {
+            background: #ee5a5a;
+            transform: scale(1.05);
+        }
+
+        /* CATEGORÍAS */
+        .categories {
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .categories h2 {
+            text-align: center;
+            font-size: 32px;
+            color: #023e8a;
+            margin-bottom: 30px;
+        }
+
+        .category-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .cat-btn {
+            padding: 10px 25px;
+            border: 2px solid #0077b6;
+            background: white;
+            color: #0077b6;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background: #0077b6;
+            color: white;
+        }
+
+        /* PRODUCTOS */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 0 20px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #e63946;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .product-badge.nuevo {
+            background: #2ec4b6;
+        }
+
+        .product-badge.best {
+            background: #ff9f1c;
+        }
+
+        .product-img {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background: #e8f4f8;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .product-card:hover .product-img img {
+            transform: scale(1.08);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #023e8a;
+            margin-bottom: 8px;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .product-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .spec-tag {
+            background: #e8f4f8;
+            color: #0077b6;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .product-rating {
+            color: #ff9f1c;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2ec4b6;
+        }
+
+        .product-price .old-price {
+            font-size: 16px;
+            color: #999;
+            text-decoration: line-through;
+            margin-left: 10px;
+            font-weight: normal;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-add-cart {
+            flex: 1;
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .btn-add-cart:hover {
+            opacity: 0.9;
+        }
+
+        .btn-detail {
+            background: #f0f4f8;
+            color: #0077b6;
+            border: 2px solid #0077b6;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn-detail:hover {
+            background: #0077b6;
+            color: white;
+        }
+
+        /* CARRITO LATERAL */
+        .cart-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+        }
+
+        .cart-overlay.active {
+            display: block;
+        }
+
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 420px;
+            height: 100%;
+            background: white;
+            z-index: 2001;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.3);
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-panel.active {
+            right: 0;
+        }
+
+        .cart-header {
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            font-size: 20px;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .cart-item-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #e8f4f8;
+        }
+
+        .cart-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-price {
+            color: #2ec4b6;
+            font-weight: bold;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: #0077b6;
+            color: white;
+            border-color: #0077b6;
+        }
+
+        .remove-item {
+            color: #e63946;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .remove-item:hover {
+            text-decoration: underline;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .cart-empty .icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 2px solid #eee;
+            background: #f8f9fa;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background: linear-gradient(135deg, #2ec4b6, #20a39e);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .btn-checkout:hover {
+            opacity: 0.9;
+        }
+
+        .btn-checkout:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* MODAL DETALLE */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            font-size: 30px;
+            cursor: pointer;
+            color: #666;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .modal-img {
+            background: #e8f4f8;
+            border-radius: 16px;
+            overflow: hidden;
+            min-height: 350px;
+        }
+
+        .modal-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-info h2 {
+            color: #023e8a;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .modal-info .price {
+            font-size: 32px;
+            color: #2ec4b6;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .modal-info .desc {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .modal-specs {
+            margin-bottom: 20px;
+        }
+
+        .modal-specs h4 {
+            color: #0077b6;
+            margin-bottom: 10px;
+        }
+
+        .modal-specs ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .modal-specs li {
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .modal-specs li::before {
+            content: "✓ ";
+            color: #2ec4b6;
+            font-weight: bold;
+        }
+
+        .modal-add-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #0077b6, #00b4d8);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: opacity 0.3s;
+        }
+
+        .modal-add-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* MODAL CHECKOUT */
+        .checkout-form {
+            padding: 40px;
+        }
+
+        .checkout-form h2 {
+            color: #023e8a;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0077b6;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .order-summary h3 {
+            color: #023e8a;
+            margin-bottom: 15px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            padding-top: 10px;
+            color: #2ec4b6;
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: linear-gradient(135deg, #2ec4b6, #20a39e);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .btn-pay:hover {
+            opacity: 0.9;
+        }
+
+        /* CONFIRMACIÓN */
+        .confirmation {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .confirmation .check {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .confirmation h2 {
+            color: #2ec4b6;
+            margin-bottom: 10px;
+        }
+
+        .confirmation .order-id {
+            background: #f0f4f8;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #0077b6;
+        }
+
+        .confirmation p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .btn-back {
+            margin-top: 25px;
+            background: #0077b6;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #023e8a;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        footer .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        footer a {
+            color: #90e0ef;
+            text-decoration: none;
+        }
+
+        footer p {
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #2ec4b6;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: bold;
+            z-index: 5000;
+            transition: transform 0.4s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .modal-body { grid-template-columns: 1fr; }
+            .cart-panel { width: 100%; right: -100%; }
+            .form-row { grid-template-columns: 1fr; }
+            header { padding: 12px 15px; flex-wrap: wrap; gap: 10px; }
+            nav { gap: 12px; }
+            .products-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">MoveFree <span>Sillas de Ruedas</span></div>
+        <nav>
+            <a onclick="scrollToSection('catalogo')">Catálogo</a>
+            <a onclick="scrollToSection('categorias')">Categorías</a>
+            <a onclick="scrollToSection('footer')">Contacto</a>
+            <button class="cart-btn" onclick="toggleCart()">
+                Carrito <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Movilidad sin limites</h1>
+        <p>Encuentra la silla de ruedas perfecta para ti. Catalogo con mas de 15 modelos, envio gratis y garantia extendida.</p>
+        <button class="hero-btn" onclick="scrollToSection('catalogo')">Ver catalogo completo</button>
+    </section>
+
+    <!-- CATEGORIAS -->
+    <section class="categories" id="categorias">
+        <h2>Filtra por categoria</h2>
+        <div class="category-filters" id="categoryFilters">
+            <button class="cat-btn active" onclick="filterProducts('todos', this)">Todos</button>
+            <button class="cat-btn" onclick="filterProducts('manual', this)">Manuales</button>
+            <button class="cat-btn" onclick="filterProducts('electrica', this)">Electricas</button>
+            <button class="cat-btn" onclick="filterProducts('deportiva', this)">Deportivas</button>
+            <button class="cat-btn" onclick="filterProducts('pediatrica', this)">Pediatricas</button>
+            <button class="cat-btn" onclick="filterProducts('plegable', this)">Plegables</button>
+        </div>
+    </section>
+
+    <!-- PRODUCTOS -->
+    <div class="products-grid" id="productsGrid"></div>
+
+    <!-- CARRITO -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h3>Tu Carrito</h3>
+            <button class="close-cart" onclick="toggleCart()">x</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="btn-checkout" id="btnCheckout" onclick="openCheckout()" disabled>
+                Proceder al pago
+            </button>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLE -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('detailModal')">x</button>
+            <div class="modal-body" id="detailBody"></div>
+        </div>
+    </div>
+
+    <!-- MODAL CHECKOUT -->
+    <div class="modal-overlay" id="checkoutModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal('checkoutModal')">x</button>
+            <div class="checkout-form" id="checkoutBody"></div>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <div class="footer-links">
+            <a href="#">Sobre nosotros</a>
+            <a href="#">Politica de envio</a>
+            <a href="#">Garantias</a>
+            <a href="#">Soporte tecnico</a>
+            <a href="#">Devoluciones</a>
+        </div>
+        <p>&copy; 2026 MoveFree - Sillas de Ruedas. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "MoveFree Classic 100",
+                desc: "Silla de ruedas manual estandar. Ideal para uso diario en interiores y exteriores. Estructura de aluminio ultraligera.",
+                price: 8999,
+                oldPrice: 11999,
+                category: "manual",
+                badge: "-25%",
+                badgeClass: "",
+                rating: 4.5,
+                img: "https://images.pexels.com/photos/6194680/pexels-photo-6194680.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 12 kg", "Carga max: 120 kg", "Ancho asiento: 48 cm", "Ruedas 24"],
+                features: ["Frenos de mano", "Respaldo abatible", "Reposapies plegables", "Estructura de aluminio"]
+            },
+            {
+                id: 2,
+                name: "MoveFree Sport Pro",
+                desc: "Silla deportiva ultraligera disenada para competicion. Angulo optimizado para velocidad y maniobrabilidad.",
+                price: 18999,
+                oldPrice: null,
+                category: "deportiva",
+                badge: "Nuevo",
+                badgeClass: "nuevo",
+                rating: 4.8,
+                img: "https://images.pexels.com/photos/34924219/pexels-photo-34924219.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 6.5 kg", "Carga max: 100 kg", "Ancho asiento: 42 cm", "Ruedas 25"],
+                features: ["Cuadro de titanio", "Ruedas carbono", "Ajuste personalizado", "Frenos bajo llanta"]
+            },
+            {
+                id: 3,
+                name: "MoveFree Power X1",
+                desc: "Silla electrica con joystick. Bateria de larga duracion y motor silencioso de 250W. Ideal para recorridos largos.",
+                price: 45999,
+                oldPrice: 52999,
+                category: "electrica",
+                badge: "-13%",
+                badgeClass: "",
+                rating: 4.7,
+                img: "https://images.pexels.com/photos/8127701/pexels-photo-8127701.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 52 kg", "Carga max: 150 kg", "Velocidad: 10 km/h", "Autonomia: 25 km"],
+                features: ["Joystick intuitivo", "Bateria Li-Ion", "Suspension delantera", "Luces LED integradas"]
+            },
+            {
+                id: 4,
+                name: "MoveFree Kid Lite",
+                desc: "Silla pediatrica ajustable crece con tu hijo. Diseno colorido y divertido con componentes de seguridad reforzados.",
+                price: 6499,
+                oldPrice: null,
+                category: "pediatrica",
+                badge: "Nuevo",
+                badgeClass: "nuevo",
+                rating: 4.9,
+                img: "https://images.pexels.com/photos/8524607/pexels-photo-8524607.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 8 kg", "Carga max: 60 kg", "Ajustable: 5-14 anios", "Ruedas 20"],
+                features: ["Ajustable en altura", "Cinturon de seguridad", "Colores personalizables", "Frenos adaptados"]
+            },
+            {
+                id: 5,
+                name: "MoveFree Fold 200",
+                desc: "Plegable compacta. Se pliega en 3 segundos para transporte facil. Perfecta para viajar en auto o transporte publico.",
+                price: 7299,
+                oldPrice: 9499,
+                category: "plegable",
+                badge: "-23%",
+                badgeClass: "",
+                rating: 4.4,
+                img: "https://images.pexels.com/photos/6284828/pexels-photo-6284828.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 9.5 kg", "Carga max: 110 kg", "Plegada: 35x65 cm", "Ruedas 22"],
+                features: ["Plegado rapido", "Tapa respaldo", "Cesta trasera", "Tapa brazos abatibles"]
+            },
+            {
+                id: 6,
+                name: "MoveFree Electric Lite",
+                desc: "Silla electrica compacta y ligera. Perfecta para desplazamientos urbanos con bateria extraible.",
+                price: 29999,
+                oldPrice: 34999,
+                category: "electrica",
+                badge: "Best Seller",
+                badgeClass: "best",
+                rating: 4.6,
+                img: "https://images.pexels.com/photos/8415827/pexels-photo-8415827.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 28 kg", "Carga max: 120 kg", "Velocidad: 8 km/h", "Autonomia: 18 km"],
+                features: ["Bateria extraible", "Joystick plegable", "Carga USB", "Bluetooth app"]
+            },
+            {
+                id: 7,
+                name: "MoveFree Outdoor Max",
+                desc: "Todo terreno con grandes ruedas neumaticas y suspension. Disenada para aventuras en senderos y naturaleza.",
+                price: 14999,
+                oldPrice: null,
+                category: "manual",
+                badge: "",
+                badgeClass: "",
+                rating: 4.3,
+                img: "https://images.pexels.com/photos/9764382/pexels-photo-9764382.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 18 kg", "Carga max: 130 kg", "Ruedas 26", "Suspension trasera"],
+                features: ["Ruedas todoterreno", "Suspension trasera", "Marco reforzado", "Manillar deportivo"]
+            },
+            {
+                id: 8,
+                name: "MoveFree Elite Ultra",
+                desc: "Premium completa con todos los ajustes. Asiento anatomico de gel, reposacabezas y reposabrazos 4D.",
+                price: 22999,
+                oldPrice: 26999,
+                category: "manual",
+                badge: "Premium",
+                badgeClass: "best",
+                rating: 4.9,
+                img: "https://images.pexels.com/photos/8543062/pexels-photo-8543062.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 15 kg", "Carga max: 150 kg", "Asiento gel", "Brazos 4D"],
+                features: ["Asiento de gel", "Reposacabezas", "Brazos ajustables 4D", "Tapas abatibles"]
+            },
+            {
+                id: 9,
+                name: "MoveFree Junior Sport",
+                desc: "Deportiva infantil para ninos activos. Liviana, resistente y con estilo. Ideal para ciclismo en silla.",
+                price: 9999,
+                oldPrice: null,
+                category: "pediatrica",
+                badge: "Nuevo",
+                badgeClass: "nuevo",
+                rating: 4.7,
+                img: "https://images.pexels.com/photos/8543047/pexels-photo-8543047.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 7 kg", "Carga max: 50 kg", "Ruedas 20", "Ajustable"],
+                features: ["Cuadro ligero", "Ruedas rapidas", "Ajuste crecimiento", "Estampado personalizado"]
+            },
+            {
+                id: 10,
+                name: "MoveFree Travel Air",
+                desc: "Ultra plegable para viajeros. Cumple con normativas aereas. Funda de transporte incluida.",
+                price: 12499,
+                oldPrice: 14999,
+                category: "plegable",
+                badge: "Best Seller",
+                badgeClass: "best",
+                rating: 4.6,
+                img: "https://images.pexels.com/photos/1568804/pexels-photo-1568804.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 7.8 kg", "Carga max: 100 kg", "Aprobada IATA", "Funda incluida"],
+                features: ["Normativa aerea", "Funda de viaje", "Ruedas desmontables", "Peso ultraligero"]
+            },
+            {
+                id: 11,
+                name: "MoveFree Bariatric 200",
+                desc: "Reforzada para peso elevado. Marco reforzado de acero con capacidad extendida y asiento extra ancho.",
+                price: 16999,
+                oldPrice: null,
+                category: "manual",
+                badge: "",
+                badgeClass: "",
+                rating: 4.5,
+                img: "https://images.pexels.com/photos/8543060/pexels-photo-8543060.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 25 kg", "Carga max: 250 kg", "Asiento: 58 cm", "Ruedas 24"],
+                features: ["Marco reforzado", "Asiento extra ancho", "Tapa reforzada", "Doble sistema frenos"]
+            },
+            {
+                id: 12,
+                name: "MoveFree Power Deluxe",
+                desc: "Electricas de lujo con pantalla LCD, control por app y sistema de elevacion de asiento integrado.",
+                price: 68999,
+                oldPrice: 75999,
+                category: "electrica",
+                badge: "Premium",
+                badgeClass: "best",
+                rating: 4.9,
+                img: "https://images.pexels.com/photos/8543045/pexels-photo-8543045.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 65 kg", "Carga max: 160 kg", "Velocidad: 12 km/h", "Autonomia: 35 km"],
+                features: ["Pantalla LCD", "Control por app", "Elevacion de asiento", "Sistema GPS"]
+            },
+            {
+                id: 13,
+                name: "MoveFree Marathon",
+                desc: "Disenada para maratones y carreras de resistencia. Perfil aerodinamico y ruedas de competicion.",
+                price: 24999,
+                oldPrice: null,
+                category: "deportiva",
+                badge: "Nuevo",
+                badgeClass: "nuevo",
+                rating: 4.8,
+                img: "https://images.pexels.com/photos/35304244/pexels-photo-35304244.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 5.8 kg", "Carga max: 90 kg", "Ruedas 700c", "Perfil aero"],
+                features: ["Marco carbono", "Ruedas competicion", "Ajuste ergonomico", "Tren de rodaje"]
+            },
+            {
+                id: 14,
+                name: "MoveFree Compact Urban",
+                desc: "Compacta para ciudad. Ruedas macizas antipinchazos. Perfecta para metro, bus y aceras urbanas.",
+                price: 8499,
+                oldPrice: null,
+                category: "plegable",
+                badge: "",
+                badgeClass: "",
+                rating: 4.3,
+                img: "https://images.pexels.com/photos/34892794/pexels-photo-34892794.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 10 kg", "Carga max: 115 kg", "Ruedas 16", "Antipinchazos"],
+                features: ["Ruedas macizas", "Tapa respaldo", "Cesta delantera", "Facil plegado"]
+            },
+            {
+                id: 15,
+                name: "MoveFree Rehab Pro",
+                desc: "Silla terapeutica con multiples ajustes ortopedicos. Recomendada por profesionales de rehabilitacion.",
+                price: 19999,
+                oldPrice: 23999,
+                category: "manual",
+                badge: "-17%",
+                badgeClass: "",
+                rating: 4.7,
+                img: "https://images.pexels.com/photos/8543049/pexels-photo-8543049.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+                specs: ["Peso: 20 kg", "Carga max: 140 kg", "Reposacabezas", "Apoyapies regulable"],
+                features: ["Cabecera ortopedica", "Apoyapies elevable", "Tapa abatible", "Cinturon 5 puntos"]
+            }
+        ];
+
+        let cart = [];
+
+        function renderProducts(filter = 'todos') {
+            const grid = document.getElementById('productsGrid');
+            const filtered = filter === 'todos' ? products : products.filter(p => p.category === filter);
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card" data-category="${p.category}">
+                    ${p.badge ? `<span class="product-badge ${p.badgeClass}">${p.badge}</span>` : ''}
+                    <div class="product-img">
+                        <img src="${p.img}" alt="${p.name}" loading="lazy"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#e8f4f8;font-size:60px&quot;>&#128588;</div>';">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-rating">${'&#9733;'.repeat(Math.floor(p.rating))}${'&#9734;'.repeat(5 - Math.floor(p.rating))} ${p.rating}</div>
+                        <div class="product-desc">${p.desc}</div>
+                        <div class="product-specs">
+                            ${p.specs.map(s => `<span class="spec-tag">${s}</span>`).join('')}
+                        </div>
+                        <div class="product-price">
+                            $${p.price.toLocaleString()}
+                            ${p.oldPrice ? `<span class="old-price">$${p.oldPrice.toLocaleString()}</span>` : ''}
+                        </div>
+                        <div class="product-actions">
+                            <button class="btn-add-cart" onclick="addToCart(${p.id})">Agregar al carrito</button>
+                            <button class="btn-detail" onclick="showDetail(${p.id})">Ver mas</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(category, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderProducts(category);
+        }
+
+        function showDetail(id) {
+            const p = products.find(x => x.id === id);
+            const body = document.getElementById('detailBody');
+            body.innerHTML = `
+                <div class="modal-img">
+                    <img src="${p.img}" alt="${p.name}"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#e8f4f8;font-size:100px&quot;>&#128588;</div>';">
+                </div>
+                <div class="modal-info">
+                    <h2>${p.name}</h2>
+                    <div class="product-rating">${'&#9733;'.repeat(Math.floor(p.rating))}${'&#9734;'.repeat(5 - Math.floor(p.rating))} ${p.rating}</div>
+                    <div class="price">
+                        $${p.price.toLocaleString()}
+                        ${p.oldPrice ? `<span style="font-size:18px;color:#999;text-decoration:line-through;margin-left:10px;font-weight:normal">$${p.oldPrice.toLocaleString()}</span>` : ''}
+                    </div>
+                    <div class="desc">${p.desc}</div>
+                    <div class="modal-specs">
+                        <h4>Caracteristicas principales</h4>
+                        <ul>${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
+                    </div>
+                    <div class="modal-specs">
+                        <h4>Especificaciones</h4>
+                        <ul>${p.specs.map(s => `<li>${s}</li>`).join('')}</ul>
+                    </div>
+                    <button class="modal-add-btn" onclick="addToCart(${p.id}); closeModal('detailModal')">Agregar al carrito — $${p.price.toLocaleString()}</button>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function addToCart(id) {
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id, qty: 1 });
+            }
+            updateCart();
+            showToast("Agregado al carrito");
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(c => c.id !== id);
+            updateCart();
+        }
+
+        function changeQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    removeFromCart(id);
+                    return;
+                }
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const count = cart.reduce((sum, c) => sum + c.qty, 0);
+            const total = cart.reduce((sum, c) => {
+                const p = products.find(x => x.id === c.id);
+                return sum + (p.price * c.qty);
+            }, 0);
+
+            document.getElementById('cartCount').textContent = count;
+            document.getElementById('cartTotal').textContent = `$${total.toLocaleString()}`;
+            document.getElementById('btnCheckout').disabled = cart.length === 0;
+
+            const itemsEl = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                itemsEl.innerHTML = '<div class="cart-empty"><div class="icon">&#128722;</div><p>Tu carrito esta vacio</p></div>';
+                return;
+            }
+
+            itemsEl.innerHTML = cart.map(c => {
+                const p = products.find(x => x.id === c.id);
+                return `
+                    <div class="cart-item">
+                        <div class="cart-item-img">
+                            <img src="${p.img}" alt="${p.name}"
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='&#128588;'; this.parentElement.style.fontSize='30px'; this.parentElement.style.display='flex'; this.parentElement.style.alignItems='center'; this.parentElement.style.justifyContent='center';">
+                        </div>
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${p.name}</div>
+                            <div class="cart-item-price">$${(p.price * c.qty).toLocaleString()}</div>
+                            <div class="qty-control">
+                                <button class="qty-btn" onclick="changeQty(${c.id}, -1)">-</button>
+                                <span>${c.qty}</span>
+                                <button class="qty-btn" onclick="changeQty(${c.id}, 1)">+</button>
+                            </div>
+                            <div class="remove-item" onclick="removeFromCart(${c.id})">Eliminar</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleCart() {
+            document.getElementById('cartOverlay').classList.toggle('active');
+            document.getElementById('cartPanel').classList.toggle('active');
+        }
+
+        function openCheckout() {
+            toggleCart();
+            const total = cart.reduce((sum, c) => {
+                const p = products.find(x => x.id === c.id);
+                return sum + (p.price * c.qty);
+            }, 0);
+
+            const body = document.getElementById('checkoutBody');
+            body.innerHTML = `
+                <h2>Finalizar Compra</h2>
+                <div class="order-summary">
+                    <h3>Resumen del pedido</h3>
+                    ${cart.map(c => {
+                        const p = products.find(x => x.id === c.id);
+                        return `<div class="summary-item"><span>${p.name} x${c.qty}</span><span>$${(p.price * c.qty).toLocaleString()}</span></div>`;
+                    }).join('')}
+                    <div class="summary-item"><span>Envio</span><span style="color:#2ec4b6">Gratis</span></div>
+                    <div class="summary-total"><span>Total</span><span>$${total.toLocaleString()}</span></div>
+                </div>
+                <form onsubmit="processPayment(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" required placeholder="Juan Perez">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" required placeholder="juan@email.com">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Telefono</label>
+                            <input type="tel" required placeholder="55 1234 5678">
+                        </div>
+                        <div class="form-group">
+                            <label>Codigo Postal</label>
+                            <input type="text" required placeholder="06600">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>Direccion de envio</label>
+                            <input type="text" required placeholder="Calle, numero, colonia, ciudad">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Numero de tarjeta</label>
+                            <input type="text" required placeholder="4242 4242 4242 4242" maxlength="19">
+                        </div>
+                        <div class="form-group">
+                            <label>Vencimiento</label>
+                            <input type="text" required placeholder="MM/AA" maxlength="5">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" required placeholder="123" maxlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre en tarjeta</label>
+                            <input type="text" required placeholder="JUAN PEREZ">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-pay">Pagar $${total.toLocaleString()}</button>
+                </form>
+            `;
+            document.getElementById('checkoutModal').classList.add('active');
+        }
+
+        function processPayment(e) {
+            e.preventDefault();
+            const orderId = 'MF-' + Math.random().toString(36).substr(2, 8).toUpperCase();
+            const body = document.getElementById('checkoutBody');
+            body.innerHTML = `
+                <div class="confirmation">
+                    <div class="check">&#10004;</div>
+                    <h2>Compra realizada con exito!</h2>
+                    <div class="order-id">Pedido: ${orderId}</div>
+                    <p>Recibiras un email de confirmacion con los detalles de tu pedido y numero de seguimiento.</p>
+                    <p style="margin-top:10px">Tiempo estimado de entrega: 3-5 dias habiles</p>
+                    <button class="btn-back" onclick="closeModal('checkoutModal'); cart=[]; updateCart();">Volver al catalogo</button>
+                </div>
+            `;
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2000);
+        }
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                closeModal('detailModal');
+                closeModal('checkoutModal');
+            }
+        });
+
+        document.querySelectorAll('.modal-overlay').forEach(m => {
+            m.addEventListener('click', e => {
+                if (e.target === m) m.classList.remove('active');
+            });
+        });
+
+        renderProducts();
+        updateCart();
+    </script>
+</body>
+</html>
